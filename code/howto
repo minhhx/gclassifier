@@ -1,0 +1,15 @@
+-------- How to fork
+
+$git clone git@github.com:username/Spoon-Knife.git
+
+$ cd Spoon-KnifeChanges the active directory in the prompt to the newly cloned "Spoon-Knife" directory
+$ git remote add upstream git://github.com/octocat/Spoon-Knife.gitAssigns the original repo to a remote called "upstream"
+$ git fetch upstream
+
+$ git push origin master
+
+$ git fetch upstreamFetches any new changes from the original repo
+$ git merge upstream/master
+
+---------- How to create
+
