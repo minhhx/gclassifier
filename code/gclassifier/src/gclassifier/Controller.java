@@ -182,7 +182,7 @@ public class Controller {
         System.out.println("number of nodes in nodes list" + g.nodes.size());
     }
 
-    public void buildDecisionTree(){
+    public Tree buildDecisionTree(){
         //decision tree implementation
         /*  Decision_tree d = new Decision_tree();
 
@@ -203,7 +203,7 @@ public class Controller {
 
         Tree t = new Tree();
 
-        DecisionTree d = new DecisionTree(storeFile);
+        DecisionTreeBuilder d = new DecisionTreeBuilder(storeFile);
         ArrayList<Integer> sampleIndex = new ArrayList();
 
         for (int i = 0; i < temp.size(); i++) {
@@ -215,6 +215,8 @@ public class Controller {
         String file3 = "/home/kasturi/notun/network_constrained_dtree/GSE6988/Classification_test.txt";
         d.BuildDecTree(sampleIndex, file3, t);
         t.InOrderTraversal(t.rootNode);
+
+        return t;
     }
 }
     

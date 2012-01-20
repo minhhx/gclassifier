@@ -11,9 +11,6 @@ public class SelectProt {
 
     SelectProt() {
     }
-
-    ;
-
     public static void main(String[] args) {
 
         String file1 = "/cs/student/kbhattacharjee/Dec_tree/GSE3964/genetoprot.txt";

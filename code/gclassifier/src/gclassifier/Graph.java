@@ -40,8 +40,6 @@ class Edge {
 
     Edge() {
     }
-
-    ;
 }
 
 public class Graph {

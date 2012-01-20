@@ -27,7 +27,7 @@ public class Main {
         String filePPI = "./PPI.txt";
         
         Controller c = new Controller(fileProteinExp, fileSampletoBinary, filePPI);
-        c.buildDecisionTree();
+        Tree t = c.buildDecisionTree();
     }
 
 }

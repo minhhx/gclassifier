@@ -10,8 +10,6 @@ public class SampletoBinary {
     SampletoBinary() {
     }
 
-    ;
-
     public static void main(String[] args) {
 
         String file1 = "/home/kasturi/notun/network_constrained_dtree/GSE6988/SampletoDisease.txt";  //file to read from
@@ -41,8 +39,6 @@ public class SampletoBinary {
                 }
             }
             br2.close();
-
-
         } catch (Exception e) {
             System.out.println(e);
         }
