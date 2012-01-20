@@ -1,13 +1,17 @@
--------- How to fork
-
+-------- How to fork (for Kasturi)
 $git clone git@github.com:minhhx/gclassifier.git
 
 $ cd gclassifier
 $ git remote add upstream git://github.com/octocat/gclassifier.git
 $ git fetch upstream
 
+-------- How to commit to folk (for Kasturi)
+$ git init
+$ git add README
+$ git commit -m 'first commit'
 $ git push origin master
 
+-------- How to get update from folk (for Kasturi)
 $ git fetch upstream
 $ git merge upstream/master
 
