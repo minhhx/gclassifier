@@ -4,52 +4,36 @@ import java.util.*;
 import java.io.*;
 import java.io.FileReader;
 
-public class Controller {
+public class Controller {    
+    HashMap<String, Integer> protid;  //this is created and updated to get the number of proteins to work with
+    HashMap<String, Boolean> SampleBinary;   //to store class value true or false for every sample
+    ArrayList<ArrayList<String>> temp;   //this reads the entire file nto an arraylist of arraylists, this is used just once in th beginning
+    HashMap<String, Integer> sampleid;  //to store the index of every sample
+    boolean[][] storeFile;//to store the whole file in this array, this is what will be used henceforth
 
-    Controller() {
-    }
-
-    ;
-    static HashMap<String, Integer> protid;  //this is created and updated to get the number of proteins to work with
-    static HashMap<String, Boolean> SampleBinary;   //to store class value true or false for every sample
-    static ArrayList<ArrayList<String>> temp;   //this reads the entire file nto an arraylist of arraylists, this is used just once in th beginning
-    static HashMap<String, Integer> sampleid;  //to store the index of every sample
-    static boolean[][] storeFile;//to store the whole file in this array, this is what will be used henceforth
-
-    public static void main(String[] args) {
-//        String file1 = "/home/kasturi/notun/network_constrained_dtree/GSE6988/ProteinExp.txt";
-//        String file2 = "/home/kasturi/notun/network_constrained_dtree/GSE6988/SampletoBinary.txt";
-
-//        String file1 = "/media/Entertain/Code/GSE6988/pe_test.txt";
-//        String file2 = "/media/Entertain/Code/GSE6988/samp_test.txt";
-        String file1 = "/media/Entertain/Code/GSE6988/ProteinExp.txt";
-        String file2 = "/media/Entertain/Code/GSE6988/SampletoBinary.txt";
-
-        Controller c = new Controller();
+    Controller(String fileProExp, String fileSampleLabel, String filePPI) {
         protid = new HashMap();
-
         SampleBinary = new HashMap();
-
         temp = new ArrayList<ArrayList<String>>();
-
         sampleid = new HashMap();
 
-        Boolean b1 = true;
-        Boolean b2;
+        loadData(fileProExp, fileSampleLabel, filePPI);
+    }
 
+
+    // load data from files
+    private void loadData(String fileProExp, String fileSampleLabel, String filePPI){
+        Boolean b1 = true;
         int linenum = 0; //to keep track of the number of rows in the file (which is equal to the number of samples)
 
         try {
-
-            BufferedReader br1 = new BufferedReader(new FileReader(file1));
-
+            BufferedReader br1 = new BufferedReader(new FileReader(fileProExp));
             int count = 1;
             while (br1.ready()) {
                 String[] X = br1.readLine().split("\t");
                 ArrayList<String> temp1 = new ArrayList();
 
                 for (int i = 0; i < X.length - 1; i++) {
-
                     temp1.add(X[i].trim());
 //                    if (protid.isEmpty()) {
 //                        protid.put(X[i + 1].trim(), 1);
@@ -57,14 +41,11 @@ public class Controller {
                     if (protid.containsKey(X[i + 1].trim()) == false) {// || protid.get(X[i + 1].trim()) == null) {
                         protid.put(X[i + 1].trim(), count++);
                     }
-
                 }
                 temp1.add(X[X.length - 1]);  //adding the last protein
                 linenum++;
                 temp.add(temp1);
-
             }
-
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -77,7 +58,7 @@ public class Controller {
         System.out.println("proteins " + protid.get(i));*/
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader(file2));
+            BufferedReader br = new BufferedReader(new FileReader(fileSampleLabel));
             while (br.ready()) {
                 String X = br.readLine();
                 String[] Y = X.split("\t");
@@ -98,15 +79,12 @@ public class Controller {
 
 
         for (int i = 0; i < linenum; i++) {
-            for (int j = 0; j < numprot; j++) {
-                storeFile[i][j] = false;   //initializing all protein expression values to false
-            }
+            //initializing all protein expression values to false
+            Arrays.fill(storeFile[i], false);
         }
 
         /* System.out.println("checking num of samples " + linenum);
         System.out.println("checking num of samples AGAIN " + SampleBinary.size()); */
-
-
 
         //filling up storeFile:
 
@@ -156,18 +134,10 @@ public class Controller {
         } System.out.println();System.out.println("number of trues for  " + i + "th sample "+ count);
         }*/
 
-
-
         //building the PPI network
-
         Graph g = new Graph();
-
-        String filename = "/home/kasturi/notun/network_constrained_dtree/PPInetwork/PPI.txt";
-
         try {
-
-
-            BufferedReader br = new BufferedReader(new FileReader(filename));
+            BufferedReader br = new BufferedReader(new FileReader(filePPI));
 
             while (br.ready()) {
                 String X = br.readLine();
@@ -177,10 +147,9 @@ public class Controller {
                 String B = Y[1].trim();
 
                 if (protid.containsKey(A) && protid.containsKey(B)) {
-                    g.GraphBuild(A, B);
+                    g.GraphBuild(A, B, protid);
                 }
                 //System.out.println("One run of graph building completed");
-
             }
 
         } catch (Exception e) {
@@ -189,12 +158,10 @@ public class Controller {
 
         //writing to a file
        /* String filename2 = "/home/kasturi/notun/network_constrained_dtree/PPInetwork/PPIout_new.txt";
-        
-
 
         try{
         BufferedWriter br2 = new BufferedWriter(new FileWriter(filename2));
-        
+
         for(int i = 0; i < g.nodes.size(); i++){
         br2.write((g.nodes.get(i)).label);
         br2.write("\t");
@@ -213,9 +180,9 @@ public class Controller {
         }catch(Exception e){System.out.println(e);} */
 
         System.out.println("number of nodes in nodes list" + g.nodes.size());
+    }
 
-
-
+    public void buildDecisionTree(){
         //decision tree implementation
         /*  Decision_tree d = new Decision_tree();
 
@@ -236,22 +203,18 @@ public class Controller {
 
         Tree t = new Tree();
 
-        Decision_tree d = new Decision_tree(storeFile);
+        DecisionTree d = new DecisionTree(storeFile);
         ArrayList<Integer> sampleIndex = new ArrayList();
 
-        for (int i = 0; i < linenum; i++) {
+        for (int i = 0; i < temp.size(); i++) {
             sampleIndex.add(i);
         }
 
         System.out.println("sampleIndex " + sampleIndex.size());
 
         String file3 = "/home/kasturi/notun/network_constrained_dtree/GSE6988/Classification_test.txt";
-
-        d.BuildDecTree(sampleIndex, file3, t, c);
-
+        d.BuildDecTree(sampleIndex, file3, t);
         t.InOrderTraversal(t.rootNode);
-
-
     }
 }
     

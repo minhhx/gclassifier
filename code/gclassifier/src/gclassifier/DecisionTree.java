@@ -3,7 +3,7 @@ package gclassifier;
 //the modified decision tree program
 import java.util.*;
 
-public class Decision_tree {
+public class DecisionTree {
 
     double Gain;
     int feature;
@@ -11,7 +11,7 @@ public class Decision_tree {
     boolean[][] storeFile;
     
     // Graph g;
-    Decision_tree(boolean[][] _storeFile) {
+    DecisionTree(boolean[][] _storeFile) {
         storeFile = _storeFile;
     }
 
@@ -96,7 +96,7 @@ public class Decision_tree {
         return val;
     }
 
-    void BuildDecTree(ArrayList<Integer> S, String file3, Tree t, Controller c) {
+    void BuildDecTree(ArrayList<Integer> S, String file3, Tree t) {
 
         feature = chooseFeature(S);
 
@@ -120,13 +120,13 @@ public class Decision_tree {
         } else {
 
             TreeNode temp = newNode;
-            BuildDecTree(temp.Set0, file3, t, c, 0, t.rootNode);
-            BuildDecTree(temp.Set1, file3, t, c, 1, t.rootNode);
+            BuildDecTree(temp.Set0, file3, t, 0, t.rootNode);
+            BuildDecTree(temp.Set1, file3, t, 1, t.rootNode);
         }
 
     }
 
-    void BuildDecTree(ArrayList<Integer> S, String file3, Tree t, Controller c, int leftOrRight, TreeNode currentNode) {
+    void BuildDecTree(ArrayList<Integer> S, String file3, Tree t, int leftOrRight, TreeNode currentNode) {
 
         System.out.println(S.size());
         feature = chooseFeature(S);
@@ -151,8 +151,8 @@ public class Decision_tree {
         } else {
             TreeNode temp = newNode;
             t.insert(currentNode, newNode, leftOrRight);
-            BuildDecTree(temp.Set0, file3, t, c, 0, newNode);
-            BuildDecTree(temp.Set1, file3, t, c, 1, newNode);
+            BuildDecTree(temp.Set0, file3, t, 0, newNode);
+            BuildDecTree(temp.Set1, file3, t, 1, newNode);
         }
     }
     /*public static void main(String[] args){
